@@ -5,6 +5,7 @@ import { PrismaModule } from 'src/shared/modules/prisma/prisma.module';
 import { TokenModule } from 'src/shared/modules/token/token.module';
 
 import { AuthModule } from '../auth/auth.module';
+import { PostsModule } from '../posts/posts.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AuthModule } from '../auth/auth.module';
     PrismaModule,
     TokenModule,
     AuthModule,
+    PostsModule,
   ],
 })
 export class AppModule {}

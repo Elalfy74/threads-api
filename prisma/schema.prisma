@@ -20,4 +20,48 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  posts   Post[]
+  likes   Like[]
+  replies Reply[]
+}
+
+model Post {
+  id       String  @id @default(uuid())
+  content  String
+  imageUrl String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  likes   Like[]
+  replies Reply[]
+}
+
+model Like {
+  userId String
+  postId String
+
+  Post Post @relation(fields: [postId], references: [id])
+  User User @relation(fields: [userId], references: [id])
+
+  @@id([userId, postId])
+}
+
+model Reply {
+  userId String
+  postId String
+
+  content String
+
+  Post Post @relation(fields: [postId], references: [id])
+  User User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, postId])
 }
