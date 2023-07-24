@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { UploadApiResponse } from 'cloudinary';
 
-import { CreatePostDto } from './dtos';
 import { PrismaService } from 'src/shared/modules/prisma/prisma.service';
 import { ISession } from 'src/shared/interfaces';
+
 import { CloudinaryService } from './cloudinary.service';
-import { UploadApiResponse } from 'cloudinary';
+import { CreatePostDto } from './dtos';
 
 @Injectable()
 export class PostsService {
@@ -34,7 +35,7 @@ export class PostsService {
   }
 
   async find(session: ISession) {
-    const posts = await this.prisma.post.findMany({
+    return this.prisma.post.findMany({
       include: {
         user: {
           select: {
@@ -44,7 +45,7 @@ export class PostsService {
         },
         likes: {
           where: {
-            userId: session?.userId || undefined,
+            userId: session?.userId || 'Not Valid Value',
           },
         },
         _count: {
@@ -58,7 +59,5 @@ export class PostsService {
         createdAt: 'desc',
       },
     });
-
-    return posts;
   }
 }
