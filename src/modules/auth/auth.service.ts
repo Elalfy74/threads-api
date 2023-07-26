@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { compare, hash } from 'bcryptjs';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { User } from '@prisma/client';
 
 import { PrismaService } from 'src/shared/modules/prisma/prisma.service';
 import { TokenService } from 'src/shared/modules/token/token.service';
@@ -28,21 +29,7 @@ export class AuthService {
         data: registerDto,
       });
 
-      const accessToken = this.tokenService.signToken(
-        {
-          userId: user.id,
-          username: user.username,
-        },
-        'access',
-      );
-
-      const refreshToken = this.tokenService.signToken(
-        {
-          userId: user.id,
-          username: user.username,
-        },
-        'refresh',
-      );
+      const { accessToken, refreshToken } = this.generateTokens(user);
 
       return {
         accessToken,
@@ -75,6 +62,16 @@ export class AuthService {
     if (!isEqual)
       throw new UnauthorizedException('Invalid Username or Password');
 
+    const { accessToken, refreshToken } = this.generateTokens(user);
+
+    return {
+      accessToken,
+      refreshToken,
+      user,
+    };
+  }
+
+  private generateTokens(user: User) {
     const accessToken = this.tokenService.signToken(
       {
         userId: user.id,
@@ -94,7 +91,6 @@ export class AuthService {
     return {
       accessToken,
       refreshToken,
-      user,
     };
   }
 }
