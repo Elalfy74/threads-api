@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  ParseFilePipe,
   Post,
   UploadedFile,
   UseGuards,
@@ -16,6 +17,7 @@ import { ISession } from 'src/shared/interfaces';
 import { PostsService } from './posts.service';
 import { CreatePostDto, PostDto } from './dtos';
 import { GetUser } from 'src/shared/decorators';
+import { ImageSize } from './image-size.pipe';
 
 @Controller('posts')
 export class PostsController {
@@ -26,7 +28,13 @@ export class PostsController {
   @UseInterceptors(FileInterceptor('file'))
   async create(
     @Body() createPostDto: CreatePostDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new ImageSize()],
+        fileIsRequired: false,
+      }),
+    )
+    file: Express.Multer.File,
     @GetUser() session: ISession,
   ) {
     return this.postsService.create(createPostDto, file, session);
