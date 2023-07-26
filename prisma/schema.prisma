@@ -52,6 +52,8 @@ model Like {
 }
 
 model Reply {
+  id String @id @default(uuid())
+
   userId String
   postId String
 
@@ -62,6 +64,4 @@ model Reply {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@id([userId, postId])
 }

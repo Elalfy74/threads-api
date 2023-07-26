@@ -13,6 +13,7 @@ import { deserializeUser } from 'src/shared/middleware/deserialize-user.middlewa
 import { AuthModule } from '../auth/auth.module';
 import { PostsModule } from '../posts/posts.module';
 import { LikesModule } from '../likes/likes.module';
+import { RepliesModule } from '../replies/replies.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { LikesModule } from '../likes/likes.module';
     AuthModule,
     PostsModule,
     LikesModule,
+    RepliesModule,
   ],
 })
 export class AppModule implements NestModule {
