@@ -30,8 +30,12 @@ import { RepliesModule } from '../replies/replies.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(deserializeUser)
-      .forRoutes({ path: 'posts/*', method: RequestMethod.GET });
+    consumer.apply(deserializeUser).forRoutes(
+      { path: 'posts/*', method: RequestMethod.GET },
+      {
+        path: 'posts',
+        method: RequestMethod.GET,
+      },
+    );
   }
 }
