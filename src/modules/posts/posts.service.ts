@@ -5,7 +5,7 @@ import { PrismaService } from 'src/shared/modules/prisma/prisma.service';
 import { ISession } from 'src/shared/interfaces';
 
 import { CloudinaryService } from './cloudinary.service';
-import { CreatePostDto } from './dtos';
+import { CreatePostDto, FindPostDto } from './dtos';
 
 @Injectable()
 export class PostsService {
@@ -57,6 +57,49 @@ export class PostsService {
       },
       orderBy: {
         createdAt: 'desc',
+      },
+    });
+  }
+
+  async findOne(param: FindPostDto, session: ISession) {
+    return this.prisma.post.findUnique({
+      where: {
+        id: param.postId,
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+            avatar: true,
+          },
+        },
+        likes: {
+          where: {
+            userId: session?.userId || 'Not Valid Value',
+          },
+        },
+        replies: {
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            user: {
+              select: {
+                username: true,
+                avatar: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            replies: true,
+          },
+        },
       },
     });
   }

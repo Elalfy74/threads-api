@@ -32,6 +32,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(deserializeUser)
-      .forRoutes({ path: 'posts', method: RequestMethod.GET });
+      .forRoutes({ path: 'posts/*', method: RequestMethod.GET });
   }
 }

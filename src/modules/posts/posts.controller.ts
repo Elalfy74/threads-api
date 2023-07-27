@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   ParseFilePipe,
   Post,
   UploadedFile,
@@ -13,11 +14,16 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/shared/guards';
 import { Serialize } from 'src/shared/interceptors';
 import { ISession } from 'src/shared/interfaces';
+import { GetUser } from 'src/shared/decorators';
 
 import { PostsService } from './posts.service';
-import { CreatePostDto, PostDto } from './dtos';
-import { GetUser } from 'src/shared/decorators';
 import { ImageSize } from './image-size.pipe';
+import {
+  CreatePostDto,
+  FindPostDto,
+  PostDto,
+  PostWithRepliesDto,
+} from './dtos';
 
 @Controller('posts')
 export class PostsController {
@@ -44,5 +50,11 @@ export class PostsController {
   @Serialize(PostDto)
   find(@GetUser() session: ISession) {
     return this.postsService.find(session);
+  }
+
+  @Get(':postId')
+  @Serialize(PostWithRepliesDto)
+  findOne(@Param() param: FindPostDto, @GetUser() session: ISession) {
+    return this.postsService.findOne(param, session);
   }
 }

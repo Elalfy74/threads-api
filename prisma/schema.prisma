@@ -45,8 +45,8 @@ model Like {
   userId String
   postId String
 
-  Post Post @relation(fields: [postId], references: [id])
-  User User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   @@id([userId, postId])
 }
@@ -59,8 +59,8 @@ model Reply {
 
   content String
 
-  Post Post @relation(fields: [postId], references: [id])
-  User User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
