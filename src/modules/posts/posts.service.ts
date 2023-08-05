@@ -34,7 +34,7 @@ export class PostsService {
     });
   }
 
-  async find(session: ISession) {
+  async find(session: ISession, page: number, itemsPerPage: number) {
     return this.prisma.post.findMany({
       include: {
         user: {
@@ -55,6 +55,8 @@ export class PostsService {
           },
         },
       },
+      take: itemsPerPage,
+      skip: (page - 1) * itemsPerPage,
       orderBy: {
         createdAt: 'desc',
       },

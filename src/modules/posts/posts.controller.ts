@@ -4,7 +4,9 @@ import {
   Get,
   Param,
   ParseFilePipe,
+  ParseIntPipe,
   Post,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -48,8 +50,12 @@ export class PostsController {
 
   @Get()
   @Serialize(PostDto)
-  find(@GetUser() session: ISession) {
-    return this.postsService.find(session);
+  find(
+    @GetUser() session: ISession,
+    @Query('page', ParseIntPipe) page: number,
+    @Query('itemsPerPage', ParseIntPipe) itemsPerPage: number,
+  ) {
+    return this.postsService.find(session, page, itemsPerPage);
   }
 
   @Get(':postId')
