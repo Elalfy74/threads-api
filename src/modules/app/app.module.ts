@@ -15,6 +15,8 @@ import { PostsModule } from '../posts/posts.module';
 import { LikesModule } from '../likes/likes.module';
 import { RepliesModule } from '../replies/replies.module';
 
+import { AppController } from './app.controller';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,6 +29,7 @@ import { RepliesModule } from '../replies/replies.module';
     LikesModule,
     RepliesModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

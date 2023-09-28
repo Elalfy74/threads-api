@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { ISession } from 'src/shared/interfaces';
 import { JwtAuthGuard } from 'src/shared/guards';
@@ -9,6 +10,7 @@ import { RepliesService } from './replies.service';
 import { CreateReplyDto, NewReplyDto, FindRepliesDto } from './dtos';
 
 @Controller('replies')
+@ApiTags('Replies')
 export class RepliesController {
   constructor(private readonly repliesService: RepliesService) {}
 

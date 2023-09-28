@@ -6,6 +6,7 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from 'src/shared/guards';
 import { GetUser } from 'src/shared/decorators';
@@ -15,6 +16,7 @@ import { LikesService } from './likes.service';
 import { CreateLikeDto, RemoveLikeDto } from './dtos';
 
 @Controller('likes')
+@ApiTags('Likes')
 @UseGuards(JwtAuthGuard)
 export class LikesController {
   constructor(private readonly likesService: LikesService) {}
